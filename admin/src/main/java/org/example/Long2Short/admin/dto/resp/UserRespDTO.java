@@ -1,6 +1,8 @@
 package org.example.Long2Short.admin.dto.resp;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
+import org.example.Long2Short.admin.common.serialize.PhoneDesensitizationSerializer;
 
 /**
  * @ClassName UserRespDTO
@@ -31,6 +33,7 @@ public class UserRespDTO {
     /**
      * 手机号
      */
+    @JsonSerialize(using = PhoneDesensitizationSerializer.class)
     private String phone;
 
     /**
