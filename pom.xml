@@ -7,6 +7,12 @@
     <groupId>org.example.Long2Short</groupId>
     <artifactId>Long2Short-all</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>admin</module>
+        <module>gateway</module>
+        <module>project</module>
+    </modules>
 
     <properties>
         <java.version>17</java.version>
@@ -23,6 +29,12 @@
         <redisson.version>3.21.3</redisson.version>
         <guava.version>30.0-jre</guava.version>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
     <dependencyManagement>
         <dependencies>
             <dependency>
