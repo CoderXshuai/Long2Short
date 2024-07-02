@@ -2,7 +2,7 @@ package org.example.Long2Short.admin.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.Long2Short.admin.common.convention.result.Result;
-import org.example.Long2Short.admin.common.enums.UserErrorCodeEnum;
+import org.example.Long2Short.admin.common.convention.result.Results;
 import org.example.Long2Short.admin.dto.resp.UserRespDTO;
 import org.example.Long2Short.admin.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,13 +31,7 @@ public class UserController {
 
     @GetMapping("/api/long2short/v1/user/{username}")
     public Result<UserRespDTO> getUserByUsername(@PathVariable("username") String username) {
-        Result<UserRespDTO> result = new Result<>();
         UserRespDTO userRespDTO = userService.getUserByUsername(username);
-        if (userRespDTO == null) {
-            result.setCode(UserErrorCodeEnum.USER_NULL.code()).setMessage(UserErrorCodeEnum.USER_NULL.message());
-        } else {
-            result.setCode("0").setData(userRespDTO).setMessage("success");
-        }
-        return result;
+        return Results.success(userRespDTO);
     }
 }
