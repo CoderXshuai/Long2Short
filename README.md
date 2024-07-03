@@ -146,5 +146,5 @@ public abstract class AbstractException extends RuntimeException {
 ![检查用户名是否存在流程图.png](assets/检查用户名是否存在流程图.png)
 存在的问题：
 
-- 海量用户查询时，全部请求数据库，会将数据库之间打满。
+- 海量用户查询时，全部请求数据库，会将数据库直接打满。
 
