@@ -9,6 +9,7 @@ import org.example.Long2Short.admin.dto.resp.UserRespDTO;
 import org.example.Long2Short.admin.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -46,5 +47,16 @@ public class UserController {
     public Result<UserActualRespDTO> getActualUserByUsername(@PathVariable("username") String username) {
         UserActualRespDTO userActualRespDTO = BeanUtil.toBean(userService.getUserByUsername(username), UserActualRespDTO.class);
         return Results.success(userActualRespDTO);
+    }
+
+    /**
+     * 判断用户名是否存在
+     *
+     * @param username 用户名
+     * @return 是否存在 true: 存在, false: 不存在
+     */
+    @GetMapping("/api/long2short/v1/user/has-username")
+    public Result<Boolean> hasUsername(@RequestParam("username") String username) {
+        return Results.success(userService.hasUsername(username));
     }
 }
