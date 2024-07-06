@@ -4,13 +4,11 @@ import cn.hutool.core.bean.BeanUtil;
 import lombok.RequiredArgsConstructor;
 import org.example.Long2Short.admin.common.convention.result.Result;
 import org.example.Long2Short.admin.common.convention.result.Results;
+import org.example.Long2Short.admin.dto.req.UserRegisterReqDTO;
 import org.example.Long2Short.admin.dto.resp.UserActualRespDTO;
 import org.example.Long2Short.admin.dto.resp.UserRespDTO;
 import org.example.Long2Short.admin.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @ClassName UserController
@@ -58,5 +56,11 @@ public class UserController {
     @GetMapping("/api/long2short/v1/user/has-username")
     public Result<Boolean> hasUsername(@RequestParam("username") String username) {
         return Results.success(userService.hasUsername(username));
+    }
+
+    @PostMapping("/api/long2short/v1/user/")
+    public Result<Void> register(@RequestBody UserRegisterReqDTO requestParam) {
+        userService.register(requestParam);
+        return Results.success();
     }
 }

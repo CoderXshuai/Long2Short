@@ -2,10 +2,21 @@ package org.example.Long2Short.admin.common.enums;
 
 import org.example.Long2Short.admin.common.convention.errorcode.IErrorCode;
 
+/**
+ * @ClassName UserErrorCodeEnum
+ * @Description 用户错误码枚举
+ * @Author CoderXshuai
+ * @CreateTime 2024/6/30 1:53
+ * @Version v1.0
+ */
 public enum UserErrorCodeEnum implements IErrorCode {
     USER_NULL("B000200", "用户记录不存在"),
 
-    USER_EXIST("B000201", "用户记录已存在");
+    USER_NAME_EXIST("B000201", "用户名已存在"),
+
+    USER_EXIST("B000202", "用户记录已存在"),
+
+    USER_SAVE_ERROR("B000203", "用户记录新增失败");
     private final String code;
 
     private final String message;
