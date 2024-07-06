@@ -16,3 +16,10 @@ spring:
     redis:
       host: 127.0.0.1
       port: 6379
+mybatis-plus:
+  configuration:
+    #默认不显示SQL日志
+    #    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
