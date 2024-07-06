@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @ClassName RBloomFilterConfiguration
- * @Description 添加描述
+ * @Description Redisson布隆过滤器配置
  * @Author CoderXshuai
  * @CreateTime 2024/7/7 0:07
  * @Version v1.0
