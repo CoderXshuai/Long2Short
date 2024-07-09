@@ -254,6 +254,75 @@ tryInit 有两个核心参数：
 
 #### 数据库分库分表框架ShardingSphere
 
+##### 分片键
+
+用于将数据库（表）水平拆分的关键决策，分片键的选择直接影响到分片策略的选择。
+
+分片键的选择原则：
+
+1. 访问频率：选择访问频率高的字段作为分片键，将经常访问的数据放在同一分片，这样可以提高性能和减少跨分片查询的次数。
+2. 数据均匀性：选择分片键时，要保证数据的均匀分布，避免数据倾斜，导致热点数据集中在某个分片上，影响性能。
+3. 数据不可变性：分片键的值在数据生命周期内不可变更，不随着业务的变化而频繁修改。
+
+对于Long2Short项目，选择用户名作为分片键，因为用户名是唯一的，且访问频率高，数据均匀分布，不可变更。
+不采用用户ID作为分片键的原因：用户ID在登录时，不会传入，而用户名在登录时会传入。
+而SQL语句如果不传入分片键，会导致全表扫描，性能低下。
 通过JDBC和Proxy两种方式实现分库分表。
 
+##### 引入ShardingSphere-JDBC到项目
 
+1. 引入依赖
+2. 定义分片规则
+
+```yaml
+# 采用的是基于JDBC的分库分表，因此需要对数据源进行配置
+spring:
+  datasource:
+    # ShardingSphere 对 Driver 自定义，实现分库分表等隐藏逻辑
+    driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+    # ShardingSphere 配置文件路径
+    url: jdbc:shardingsphere:classpath:shardingsphere-config.yaml
+```
+
+新建shardingsphere-config.yaml文件
+
+```yaml
+# 数据源集合
+dataSources:
+  ds_0:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/long2short?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username:
+    password:
+
+rules:
+  - !SHARDING
+    tables:
+      t_user:
+        # 真实数据节点，比如数据库源以及数据库在数据库中真实存在的
+        actualDataNodes: ds_0.t_user_${0..15}
+        # 分表策略
+        tableStrategy:
+          # 用于单分片键的标准分片场景
+          standard:
+            # 分片键
+            shardingColumn: username
+            # 分片算法，对应 rules[0].shardingAlgorithms
+            shardingAlgorithmName: user_table_hash_mod
+    # 分片算法
+    shardingAlgorithms:
+      # 数据表分片算法
+      user_table_hash_mod:
+        # 根据分片键 Hash 分片
+        type: HASH_MOD
+        # 分片数量
+        props:
+          sharding-count: 16
+# 展现逻辑 SQL & 真实 SQL
+props:
+  sql-show: true
+```
+
+逻辑表：t_user，相同结构的水平拆分数据库的逻辑标识，对用户程序透明。
+实际表：ds_0.t_user_${0..15}，真实存在的数据库表名。
