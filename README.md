@@ -326,3 +326,40 @@ props:
 
 逻辑表：t_user，相同结构的水平拆分数据库的逻辑标识，对用户程序透明。
 实际表：ds_0.t_user_${0..15}，真实存在的数据库表名。
+
+### 敏感信息加密存储
+
+主要通过shardingsphere来实现，在shardingsphere-config.yaml中配置加密规则
+
+```yaml
+- !ENCRYPT
+  # 需要加密的表集合
+  tables:
+    # 用户表
+    t_user:
+      # 用户表中哪些字段需要进行加密
+      columns:
+        # 手机号字段，逻辑字段，不一定是在数据库中真实存在
+        phone:
+          # 手机号字段存储的密文字段，这个是数据库中真实存在的字段
+          cipherColumn: phone
+          # 身份证字段加密算法
+          encryptorName: common_encryptor
+        mail:
+          cipherColumn: mail
+          encryptorName: common_encryptor
+      # 是否按照密文字段查询，主要在企业级开发测试环境下使用，比如前期测试既存储明文又存储密文，后期只存储密文
+      queryWithCipherColumn: true
+  # 加密算法
+  encryptors:
+    # 自定义加密算法名称
+    common_encryptor:
+      # 加密算法类型
+      type: AES
+      props:
+        # AES 加密密钥
+        aes-key-value: 
+```
+
+加密原理是将SQL语句改写，在JDBC层面对数据进行加密和解密，对用户透明。
+![加密原理](./assets/加密原理.png)
