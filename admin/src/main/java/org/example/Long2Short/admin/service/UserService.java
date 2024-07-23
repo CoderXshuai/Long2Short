@@ -3,6 +3,7 @@ package org.example.Long2Short.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.example.Long2Short.admin.dao.entity.UserDO;
 import org.example.Long2Short.admin.dto.req.UserRegisterReqDTO;
+import org.example.Long2Short.admin.dto.req.UserUpdateReqDTO;
 import org.example.Long2Short.admin.dto.resp.UserRespDTO;
 
 /**
@@ -29,5 +30,17 @@ public interface UserService extends IService<UserDO> {
      */
     Boolean hasUsername(String username);
 
+    /**
+     * 用户注册
+     *
+     * @param requestParam 用户注册请求参数
+     */
     void register(UserRegisterReqDTO requestParam);
+
+    /**
+     * 用户更新
+     *
+     * @param requestParam 用户更新请求参数
+     */
+    void update(UserUpdateReqDTO requestParam);
 }

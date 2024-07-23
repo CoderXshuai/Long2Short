@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.Long2Short.admin.common.convention.result.Result;
 import org.example.Long2Short.admin.common.convention.result.Results;
 import org.example.Long2Short.admin.dto.req.UserRegisterReqDTO;
+import org.example.Long2Short.admin.dto.req.UserUpdateReqDTO;
 import org.example.Long2Short.admin.dto.resp.UserActualRespDTO;
 import org.example.Long2Short.admin.dto.resp.UserRespDTO;
 import org.example.Long2Short.admin.service.UserService;
@@ -61,6 +62,12 @@ public class UserController {
     @PostMapping("/api/long2short/v1/user/")
     public Result<Void> register(@RequestBody UserRegisterReqDTO requestParam) {
         userService.register(requestParam);
+        return Results.success();
+    }
+
+    @PutMapping("/api/long2short/v1/user/")
+    public Result<Void> update(@RequestBody UserUpdateReqDTO requestParam) {
+        userService.update(requestParam);
         return Results.success();
     }
 }
